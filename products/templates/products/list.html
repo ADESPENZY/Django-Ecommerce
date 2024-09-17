@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+    My Site
+{% endblock %}
+    
+
+{% block main %}
+  <div class="flex p-4 ">
+      <aside class="w-1/4">
+         <h2 class="font-bold">Categories:</h2>
+         <ul>
+            
+            {% for category in categories %}
+             <li>
+                <a href="{% url 'product_list_by_category' category.slug %}">{{category.name}}</a>
+             </li>   
+            {% endfor %}
+              
+         </ul>
+      </aside>
+      <main class="w-3/4">
+          
+          {% if category %}
+           <h2 class="font-bold mb-4">{{category.name}}</h2>
+          {% else %}
+           <h2 class="font-bold mb-4">All Products:</h2>
+          {% endif %}
+
+          <div class="grid grid-cols-4 gap-6">
+
+               {% for product in products %}
+               <a href="{% url 'product_detail' product.id product.slug %}" class="block bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                  <div class="relative">
+                     {% if product.image %}
+                     <div class="w-full h-60 overflow-hidden">
+                           <img src="{{product.image.url}}" alt="{{product.name}}" class="w-full h-full object-cover">
+                     </div>
+                     {% else %}
+                     <div class="w-full h-60 flex items-center justify-center bg-gray-200 text-gray-600">
+                           <p>Image not Available</p>
+                     </div>
+                     {% endif %}
+                  </div>
+                  <div class="p-4 bg-gray-300">
+                     <h3 class="text-lg font-semibold mb-2">{{product.name}}</h3>
+                     <p class="text-sm text-gray-600 mb-2">{{product.description}}</p>
+                     <p class="text-indigo-600 font-bold">${{product.price}}</p>
+                  </div>
+               </a>
+               {% endfor %}
+
+          </div>
+
+      </main>
+  </div> 
+{% endblock %}
+    
